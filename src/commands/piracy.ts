@@ -6,7 +6,7 @@ const PiracyActs: string[] = [
   'kaido-drop',
   'emperor-slayer',
   'treasure-hunter',
-  'happy-go-lucky',
+  'admirals-orders',
   'two-year-training',
   'straw-hat',
   'conqeuror-haki',
@@ -19,7 +19,7 @@ const Bounties = new Map<string, number>([
   [PiracyActs[0], 5000],
   [PiracyActs[1], 3000],
   [PiracyActs[2], 1000],
-  [PiracyActs[3], 1000],
+  [PiracyActs[3], 3000],
   [PiracyActs[4], 3000],
   [PiracyActs[5], 5000],
   [PiracyActs[6], 5000],
@@ -57,7 +57,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName(PiracyActs[2])
-        .setDescription('Play 4 searchers')
+        .setDescription('Play 4 searches')
         .addUserOption((option) =>
           option
             .setName('username')
@@ -68,7 +68,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName(PiracyActs[3])
-        .setDescription('Play 4 triggers')
+        .setDescription('K.O. 5 characters through effect')
         .addUserOption((option) =>
           option
             .setName('username')
