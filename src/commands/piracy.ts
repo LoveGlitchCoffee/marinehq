@@ -11,7 +11,8 @@ const PiracyActs: string[] = [
   'straw-hat',
   'conqeuror-haki',
   'true-nakama',
-  'king'
+  'king',
+  'hoensty-impact'
 ];
 
 const Bounties = new Map<string, number>([
@@ -23,7 +24,8 @@ const Bounties = new Map<string, number>([
   [PiracyActs[5], 5000],
   [PiracyActs[6], 5000],
   [PiracyActs[7], 3000],
-  [PiracyActs[8], 1000]
+  [PiracyActs[8], 3000],
+  [PiracyActs[9], 15000]
 ]);
 
 module.exports = {
@@ -130,6 +132,17 @@ module.exports = {
             .setDescription('Username of Pirate')
             .setRequired(true)
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName(PiracyActs[9])
+        .setDescription('K.O. a Stage')
+        .addUserOption((option) =>
+          option
+            .setName('username')
+            .setDescription('Username of Pirate')
+            .setRequired(true)
+        )
     ),
 
   async execute(interaction: ChatInputCommandInteraction) {
@@ -142,7 +155,11 @@ module.exports = {
       interaction.editReply('Something went wrong updating bounty');
       return;
     }
-    const username = interaction.user.username;
+    const username = interaction.options.getUser('username')?.username;
+    if (!username) {
+      interaction.editReply(`No such user ${username}, please try again`);
+      return;
+    }
     const newBounty = await database.updateBounty(username, bountyIncrease);
     const pirateName = await database.getPirateName(username);
     const image = await database.getImageUrl(username);
