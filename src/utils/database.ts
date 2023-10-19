@@ -73,6 +73,19 @@ async function getImageUrl(name: string): Promise<string | null> {
   return null;
 }
 
+async function getBounty(username: string) {
+  try {
+    const sql = postgres(DATABASE_URL, { ssl: 'require' });
+    const data =
+      await sql`select bounty from pirates where username=${username}`;
+    return data[0].bounty;
+  } catch (e) {
+    console.log(`Failed to fetch bount for ${username}`);
+    console.log(e);
+  }
+  return null;
+}
+
 async function updateBounty(
   name: string,
   increase: number
@@ -113,11 +126,33 @@ async function updatePoster(
   return null;
 }
 
+async function updateOGImage(
+  name: string,
+  newURL: string
+): Promise<string | null> {
+  try {
+    const sql = postgres(DATABASE_URL, { ssl: 'require' });
+    const data =
+      await sql`update pirates set image_url = ${newURL} where username=${name}
+    
+    returning *`;
+    if (data.length === 1) {
+      return data[0].image_url;
+    }
+  } catch (e) {
+    console.log(`Failed to update image for ${name}`);
+    console.log(e);
+  }
+  return null;
+}
+
 export {
   createPirate,
   getPoster,
   getPirateName,
   getImageUrl,
+  getBounty,
   updateBounty,
-  updatePoster
+  updatePoster,
+  updateOGImage
 };
